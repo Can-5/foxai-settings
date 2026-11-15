@@ -34,7 +34,7 @@ class SystemPage(BasePage):
             SettingRow(
                 "Cihaz ismi",
                 "Bu bilgisayarın ağdaki görünen adıdır.",
-                TextControl(self.get("device_name", "CachyOS-PC"), "Cihaz ismi"),
+                TextControl(self.get("device_name", "fedora-pc"), "Cihaz ismi"),
             )
         )
         lay.addWidget(card)
@@ -96,7 +96,7 @@ class SystemPage(BasePage):
             "Foxai Settings", "Modern, gizlilik odaklı Linux ayarlar uygulaması."
         )
         about = QLabel(
-            "Sürüm 1.0.0 · CachyOS / Arch Linux\n"
+            "Sürüm 1.0.0 · Fedora Linux\n"
             "Geliştirici: İlkaycan (Can-5)\n"
             "Gizlilik odaklı · Sıfır telemetri · Açık kaynak"
         )

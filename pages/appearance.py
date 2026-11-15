@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from pages.base_page import BasePage
 from theme import ACCENT
@@ -14,7 +14,6 @@ from widgets import (
     SelectControl,
     SettingRow,
     SliderControl,
-    ToggleControl,
 )
 
 
@@ -22,11 +21,6 @@ class AppearancePage(BasePage):
     def __init__(self, profile_id: int, parent=None):
         super().__init__(profile_id, parent)
         self._build_ui()
-
-    def _bool_row(self, title: str, desc: str, key: str) -> SettingRow:
-        ctrl = ToggleControl(self.get(key, True))
-        ctrl.toggled_value.connect(lambda v: self.set(key, v))
-        return SettingRow(title, desc, ctrl)
 
     def _build_ui(self) -> None:
         lay = QVBoxLayout(self)

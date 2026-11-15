@@ -54,9 +54,12 @@ foxai-settings/
 
 ## Kurulum ve Çalıştırma
 
-CachyOS / Arch Linux üzerinde:
+Fedora Linux üzerinde (geliştirme CachyOS/Arch üzerinde yapıldı, Fedora'ya taşındı):
 
 ```bash
+# Sistem bağımlılıkları (gerekirse)
+sudo dnf install python3 python3-pip git
+
 # Proje klasörüne gir
 cd "/home/ilkaycan/Belgeler/Varsayılan Proje/foxai-settings"
 

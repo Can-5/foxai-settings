@@ -21,10 +21,13 @@ class BootPage(BasePage):
         lay.setSpacing(20)
 
         lay.addWidget(SectionLabel("Önyükleyici"))
-        card = Card("GRUB önyükleyici", "Sistem başlangıç ayarlarını yapılandırın.")
+        card = Card(
+            "GRUB2 önyükleyici",
+            "Fedora GRUB2 ayarları (/etc/default/grub → grub2-mkconfig → /boot/grub2/grub.cfg).",
+        )
         os_sel = SelectControl(
-            [("CachyOS", "cachyos"), ("Windows", "windows"), ("Diğer", "other")],
-            self.get("boot_default_os", "cachyos"),
+            [("Fedora", "fedora"), ("Windows", "windows"), ("Diğer", "other")],
+            self.get("boot_default_os", "fedora"),
         )
         os_sel.changed.connect(lambda v: self.set("boot_default_os", v))
         card.add_widget(

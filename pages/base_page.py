@@ -5,6 +5,7 @@ from __future__ import annotations
 from PyQt6.QtWidgets import QWidget
 
 from database import get_setting, set_setting
+from widgets import SettingRow, ToggleControl
 
 
 class BasePage(QWidget):
@@ -19,3 +20,8 @@ class BasePage(QWidget):
 
     def set(self, key: str, value) -> None:
         set_setting(self.profile_id, key, value)
+
+    def _bool_row(self, title: str, desc: str, key: str) -> SettingRow:
+        ctrl = ToggleControl(self.get(key, True))
+        ctrl.toggled_value.connect(lambda v: self.set(key, v))
+        return SettingRow(title, desc, ctrl)

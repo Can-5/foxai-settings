@@ -96,8 +96,3 @@ class NotificationsPage(BasePage):
         lay.addWidget(card3)
 
         lay.addStretch()
-
-    def _bool_row(self, title: str, desc: str, key: str) -> SettingRow:
-        ctrl = ToggleControl(self.get(key, True))
-        ctrl.toggled_value.connect(lambda v: self.set(key, v))
-        return SettingRow(title, desc, ctrl)

@@ -317,7 +317,7 @@ class MainWindow(QWidget):
             f"color: {ACCENT}; font-size: 22px; font-weight: 900; letter-spacing: -0.5px; "
             f"background: transparent; padding: 26px 20px 12px 20px;"
         )
-        sub = QLabel("Ayarlar Merkezi · CachyOS")
+        sub = QLabel("Ayarlar Merkezi · Fedora")
         sub.setObjectName("appSubtitle")
         sl.addWidget(title)
         sl.addWidget(sub)
@@ -398,7 +398,7 @@ class MainWindow(QWidget):
         self.lbl_profile_name.setStyleSheet(
             f"color: {TEXT}; font-size: 16px; font-weight: 700; background: transparent;"
         )
-        self.lbl_profile_email = QLabel("Hesap · CachyOS")
+        self.lbl_profile_email = QLabel("Hesap · Fedora")
         self.lbl_profile_email.setStyleSheet(
             f"color: {TEXT_MUTED}; font-size: 12px; background: transparent;"
         )

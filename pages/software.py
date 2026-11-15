@@ -77,10 +77,10 @@ class SoftwarePage(BasePage):
         lay.addWidget(SectionLabel("Yazılım Depoları"))
         card2 = Card("Etkin depolar", "Paket kaynaklarını yönetin.")
         repos = [
-            ("core", "Temel sistem paketleri", True),
-            ("extra", "Kullanıcı uygulamaları", True),
-            ("multilib", "32-bit uyumluluk kitaplıkları", False),
-            ("chaotic-aur", "Kullanıcı deposu (AUR)", False),
+            ("fedora", "Fedora resmi deposu", True),
+            ("updates", "Kararlı güncellemeler", True),
+            ("rpmfusion-free", "RPM Fusion — özgür yazılım (free)", False),
+            ("rpmfusion-nonfree", "RPM Fusion — freeware (nonfree)", False),
         ]
         for repo, desc, enabled in repos:
             row = QWidget()
@@ -127,11 +127,6 @@ class SoftwarePage(BasePage):
         lay.addWidget(card3)
 
         lay.addStretch()
-
-    def _bool_row(self, title: str, desc: str, key: str) -> SettingRow:
-        ctrl = ToggleControl(self.get(key, True))
-        ctrl.toggled_value.connect(lambda v: self.set(key, v))
-        return SettingRow(title, desc, ctrl)
 
     def _notify(self, title: str, msg: str) -> None:
         from PyQt6.QtWidgets import QMessageBox
