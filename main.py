@@ -33,6 +33,8 @@ from database import (
     verify_account,
 )
 from pages.accounts import AccountsPage
+from pages.ai import AiPage
+from pages.panel import PanelPage
 from pages.appearance import AppearancePage
 from pages.bluetooth import BluetoothPage
 from pages.display import DisplayPage
@@ -277,7 +279,7 @@ class ProfileItem(QPushButton):
 
 
 class MainWindow(QWidget):
-    """Ana ayarlar penceresi — 15 modül, YaST benzeri."""
+    """Ana ayarlar penceresi — 19 modül, YaST benzeri."""
 
     def __init__(self, account_id: int, parent=None):
         super().__init__(parent)
@@ -324,23 +326,25 @@ class MainWindow(QWidget):
 
         # Tüm modüller (YaST benzeri)
         nav_defs = [
-            ("Hesap & Profiller", "👤", 0),
-            ("Görünüm", "🎨", 1),
-            ("Ekran", "🖥️", 2),
-            ("Bildirimler", "🔔", 3),
-            ("Gizlilik & Güvenlik", "🔒", 4),
-            ("Klavye", "⌨️", 5),
-            ("Fare & Touchpad", "🖱️", 6),
-            ("Güç & Pil", "🔋", 7),
-            ("Ağ & İnternet", "🌐", 8),
-            ("Bluetooth", "📶", 9),
-            ("Ses & Ayagıt", "🔊", 10),
-            ("Yazılım & Güncelleme", "📦", 11),
-            ("Donanım & Bilgi", "ℹ️", 12),
-            ("Önyükleyici (GRUB)", "⚙️", 13),
-            ("Kullanıcılar & Gruplar", "👥", 14),
-            ("Güvenlik Duvarı", "🛡️", 15),
-            ("Sistem Servisleri", "⚙️", 16),
+            ("Panel", "🏠", 0),
+            ("AI Asistan", "🤖", 1),
+            ("Hesap & Profiller", "👤", 2),
+            ("Görünüm", "🎨", 3),
+            ("Ekran", "🖥️", 4),
+            ("Bildirimler", "🔔", 5),
+            ("Gizlilik & Güvenlik", "🔒", 6),
+            ("Klavye", "⌨️", 7),
+            ("Fare & Touchpad", "🖱️", 8),
+            ("Güç & Pil", "🔋", 9),
+            ("Ağ & İnternet", "🌐", 10),
+            ("Bluetooth", "📶", 11),
+            ("Ses & Ayagıt", "🔊", 12),
+            ("Yazılım & Güncelleme", "📦", 13),
+            ("Donanım & Bilgi", "ℹ️", 14),
+            ("Önyükleyici (GRUB2)", "⚙️", 15),
+            ("Kullanıcılar & Gruplar", "👥", 16),
+            ("Güvenlik Duvarı", "🛡️", 17),
+            ("Sistem Servisleri", "⚙️", 18),
         ]
         for text, icon, idx in nav_defs:
             btn = NavItem(text, icon)
@@ -412,12 +416,12 @@ class MainWindow(QWidget):
         tl.addStretch()
         cl.addWidget(top)
 
-        self.page_title = QLabel("Hesap & Profiller")
+        self.page_title = QLabel("Panel")
         self.page_title.setObjectName("pageTitle")
         self.page_title.setStyleSheet(
             f"color: {TEXT}; font-size: 26px; font-weight: 800; background: transparent;"
         )
-        self.page_desc = QLabel("Hesabınızı ve profillerinizi yönetin.")
+        self.page_desc = QLabel("Sistem durumuna hızlı bakış.")
         self.page_desc.setObjectName("pageDesc")
         self.page_desc.setStyleSheet(
             f"color: {TEXT_MUTED}; font-size: 14px; background: transparent;"
@@ -529,6 +533,8 @@ class MainWindow(QWidget):
             page.refresh_profiles()
 
         titles = [
+            "Panel",
+            "AI Asistan",
             "Hesap & Profiller",
             "Görünüm",
             "Ekran",
@@ -542,12 +548,14 @@ class MainWindow(QWidget):
             "Ses & Ayagıt",
             "Yazılım & Güncelleme",
             "Donanım & Sistem Bilgisi",
-            "Önyükleyici (GRUB)",
+            "Önyükleyici (GRUB2)",
             "Kullanıcılar & Gruplar",
             "Güvenlik Duvarı",
             "Sistem Servisleri",
         ]
         descs = [
+            "Kaynaklar, güncellemeler ve güvenlik durumuna hızlı bakış.",
+            "Yerel Ollama modeliyle sohbet edin; sistem bağlamını ekleyin.",
             "Hesabınızı ve profillerinizi yönetin.",
             "Tema, renk ve yazı tipi ayarlarını özelleştirin.",
             "Ekran çözünürlüğü, yenileme hızı ve parlaklık.",
@@ -572,43 +580,59 @@ class MainWindow(QWidget):
     def _create_page(self, index: int) -> None:
         pid = self.active_profile_id if self.active_profile_id != -1 else 0
         if index == 0:
-            page = AccountsPage(pid, self.account_id, self._switch_profile)
+            page = PanelPage(pid)
+            page.navigate.connect(self._navigate_target)
         elif index == 1:
-            page = AppearancePage(pid)
+            page = AiPage(pid)
         elif index == 2:
-            page = DisplayPage(pid)
+            page = AccountsPage(pid, self.account_id, self._switch_profile)
         elif index == 3:
-            page = NotificationsPage(pid)
+            page = AppearancePage(pid)
         elif index == 4:
-            page = PrivacyPage(pid)
+            page = DisplayPage(pid)
         elif index == 5:
-            page = KeyboardPage(pid)
+            page = NotificationsPage(pid)
         elif index == 6:
-            page = MousePage(pid)
+            page = PrivacyPage(pid)
         elif index == 7:
-            page = PowerPage(pid)
+            page = KeyboardPage(pid)
         elif index == 8:
-            page = NetworkPage(pid)
+            page = MousePage(pid)
         elif index == 9:
-            page = BluetoothPage(pid)
+            page = PowerPage(pid)
         elif index == 10:
-            page = AudioPage(pid)
+            page = NetworkPage(pid)
         elif index == 11:
-            page = SoftwarePage(pid)
+            page = BluetoothPage(pid)
         elif index == 12:
-            page = SystemInfoPage(pid)
+            page = AudioPage(pid)
         elif index == 13:
-            page = BootPage(pid)
+            page = SoftwarePage(pid)
         elif index == 14:
-            page = UsersPage(pid)
+            page = SystemInfoPage(pid)
         elif index == 15:
-            page = FirewallPage(pid)
+            page = BootPage(pid)
         elif index == 16:
+            page = UsersPage(pid)
+        elif index == 17:
+            page = FirewallPage(pid)
+        elif index == 18:
             page = SystemServicesPage(pid)
         else:
             page = QWidget()
         self.pages.append(page)
         self.stack.addWidget(page)
+
+    def _navigate_target(self, key: str) -> None:
+        mapping = {
+            "ai": 1,
+            "software": 13,
+            "boot": 15,
+            "services": 18,
+            "firewall": 17,
+            "users": 16,
+        }
+        self._show_page(mapping.get(key, 0))
 
     def _logout(self) -> None:
         self.account_id = -1
