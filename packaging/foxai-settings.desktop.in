@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Foxai Settings
+GenericName=Linux Ayarlar Uygulaması
+Comment=Modern, gizlilik odaklı kapsamlı ayarlar uygulaması (YaST benzeri)
+Exec=foxai-settings
+Icon=foxai-settings
+Terminal=false
+Categories=System;Settings;
+Keywords=settings;system;yast;preferences;
