@@ -19,7 +19,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from theme import ACCENT, TEXT, TEXT_MUTED
+from theme import ACCENT, INPUT, TEXT, TEXT_MUTED
 
 
 class SettingRow(QWidget):
@@ -56,7 +56,7 @@ class SettingRow(QWidget):
     # Stil için satır arkaplanı
     def set_selected(self, selected: bool) -> None:
         if selected:
-            self.setStyleSheet("background: #334155; border-radius: 10px;")
+            self.setStyleSheet(f"background: {INPUT}; border-radius: 10px;")
         else:
             self.setStyleSheet("background: transparent; border-radius: 10px;")
 
@@ -74,13 +74,13 @@ class Card(QFrame):
             t = QLabel(title)
             t.setObjectName("cardTitle")
             t.setStyleSheet(
-                "color: #f8fafc; font-size: 17px; font-weight: 700; background: transparent;"
+                f"color: {TEXT}; font-size: 17px; font-weight: 700; background: transparent;"
             )
             lay.addWidget(t)
         if desc:
             d = QLabel(desc)
             d.setObjectName("cardDesc")
-            d.setStyleSheet("color: #94a3b8; font-size: 13px; background: transparent;")
+            d.setStyleSheet(f"color: {TEXT_MUTED}; font-size: 13px; background: transparent;")
             d.setWordWrap(True)
             lay.addWidget(d)
         self.content = QWidget()
@@ -106,7 +106,7 @@ class SectionLabel(QWidget):
         lbl = QLabel(text)
         lbl.setObjectName("sectionLabel")
         lbl.setStyleSheet(
-            "color: #94a3b8; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; background: transparent;"
+            f"color: {TEXT_MUTED}; font-size: 12px; font-weight: 600; background: transparent;"
         )
         lay.addWidget(lbl)
 
@@ -208,7 +208,7 @@ class SliderControl(QWidget):
             Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
         )
         self.value_label.setStyleSheet(
-            "color: #94a3b8; font-size: 12px; background: transparent;"
+            f"color: {TEXT_MUTED}; font-size: 12px; background: transparent;"
         )
         self.slider.valueChanged.connect(
             lambda v: self.value_label.setText(f"{v}{unit}")
@@ -268,10 +268,10 @@ class ActionRow(QWidget):
         ilay.setSpacing(4)
         t = QLabel(title)
         t.setStyleSheet(
-            "color: #f8fafc; font-size: 14px; font-weight: 700; background: transparent;"
+            f"color: {TEXT}; font-size: 14px; font-weight: 700; background: transparent;"
         )
         d = QLabel(desc)
-        d.setStyleSheet("color: #94a3b8; font-size: 12px; background: transparent;")
+        d.setStyleSheet(f"color: {TEXT_MUTED}; font-size: 12px; background: transparent;")
         d.setWordWrap(True)
         ilay.addWidget(t)
         ilay.addWidget(d)

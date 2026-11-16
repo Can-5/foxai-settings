@@ -5,7 +5,7 @@ from __future__ import annotations
 from PyQt6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
 
 from pages.base_page import BasePage
-from theme import ACCENT
+from theme import ACCENT, TEXT
 from widgets import (
     ActionRow,
     Card,
@@ -23,9 +23,7 @@ class NotificationsPage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         lay.addWidget(SectionLabel("Bildirimler"))
         card = Card(
@@ -83,7 +81,7 @@ class NotificationsPage(BasePage):
             rlay.setSpacing(12)
             lbl = QLabel(app_name)
             lbl.setStyleSheet(
-                "color: #f8fafc; font-size: 13px; font-weight: 600; background: transparent;"
+                f"color: {TEXT}; font-size: 13px; font-weight: 600; background: transparent;"
             )
             tgl = ToggleControl(enabled)
             tgl.toggled_value.connect(

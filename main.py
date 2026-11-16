@@ -1,12 +1,13 @@
-"""Foxai Settings — modern, kapsamlı Linux ayarlar uygulaması (YaST benzeri)."""
+"""Foxai Settings — yerel, gizlilik odaklı Linux/Fedora sistem ayarları."""
 
 from __future__ import annotations
 
 import sys
 
 from PyQt6.QtCore import Qt, QSize, pyqtSignal
-from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QColor, QIcon
 from PyQt6.QtWidgets import (
+    QScrollArea,
     QApplication,
     QFrame,
     QHBoxLayout,
@@ -58,12 +59,13 @@ from theme import (
     BORDER,
     CARD,
     DANGER,
+    INPUT,
     SIDEBAR,
     SIDEBAR_ACTIVE,
     SIDEBAR_HOVER,
+    STYLESHEET,
     TEXT,
     TEXT_MUTED,
-    STYLESHEET,
 )
 
 
@@ -102,14 +104,14 @@ class LoginPage(QWidget):
                 padding-bottom: 24px;
             }}
             QLineEdit {{
-                background: #334155; border: 1px solid {BORDER};
+                background: {INPUT}; border: 1px solid {BORDER};
                 border-radius: 10px; padding: 10px 14px; color: {TEXT};
                 min-height: 42px;
             }}
             QLineEdit:focus {{ border-color: {ACCENT}; }}
             QPushButton#primary {{
                 background: {ACCENT}; border: none; border-radius: 10px;
-                color: #fff; font-weight: 700; padding: 10px; min-height: 42px;
+                color: {BG}; font-weight: 700; padding: 10px; min-height: 42px;
             }}
             QPushButton#primary:hover {{ background: {ACCENT_HOVER}; }}
             """
@@ -118,9 +120,9 @@ class LoginPage(QWidget):
         cl.setContentsMargins(32, 32, 32, 32)
         cl.setSpacing(14)
 
-        logo = QLabel("FOXAI")
+        logo = QLabel("foxai")
         logo.setStyleSheet(
-            f"color: {ACCENT}; font-size: 34px; font-weight: 900; letter-spacing: -1px; background: transparent;"
+            f"color: {ACCENT}; font-size: 32px; font-weight: 700; background: transparent;"
         )
         logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
         cl.addWidget(logo)
@@ -137,10 +139,10 @@ class LoginPage(QWidget):
         tabs = QTabWidget()
         tabs.setStyleSheet(
             "QTabWidget::pane { border: none; background: transparent; } "
-            "QTabBar::tab { background: transparent; color: #94a3b8; "
-            "font-size: 13px; font-weight: 700; padding: 10px 16px; "
-            "border-bottom: 2px solid transparent; } "
-            "QTabBar::tab:selected { color: #409eff; border-bottom: 2px solid #409eff; }"
+            f"QTabBar::tab {{ background: transparent; color: {TEXT_MUTED}; "
+            f"font-size: 13px; font-weight: 700; padding: 10px 16px; "
+            f"border-bottom: 2px solid transparent; }} "
+            f"QTabBar::tab:selected {{ color: {ACCENT}; border-bottom: 2px solid {ACCENT}; }}"
         )
 
         login_w = self._build_login_tab()
@@ -241,12 +243,17 @@ class LoginPage(QWidget):
 
 
 class NavItem(QPushButton):
-    def __init__(self, text: str, icon: str = "", parent=None):
-        super().__init__(icon + "  " + text, parent)
+    def __init__(self, text: str, icon_name: str = "", parent=None):
+        super().__init__(text, parent)
         self.setObjectName("navItem")
         self.setCheckable(True)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setMinimumHeight(44)
+        if icon_name:
+            icon = QIcon.fromTheme(icon_name)
+            if not icon.isNull():
+                self.setIcon(icon)
+                self.setIconSize(QSize(18, 18))
 
 
 class ProfileItem(QPushButton):
@@ -279,7 +286,7 @@ class ProfileItem(QPushButton):
 
 
 class MainWindow(QWidget):
-    """Ana ayarlar penceresi — 19 modül, YaST benzeri."""
+    """Ana ayarlar penceresi — 19 modül, yerel ve gizlilik odaklı."""
 
     def __init__(self, account_id: int, parent=None):
         super().__init__(parent)
@@ -310,49 +317,65 @@ class MainWindow(QWidget):
         sidebar = QFrame()
         sidebar.setObjectName("sidebar")
         sl = QVBoxLayout(sidebar)
-        sl.setContentsMargins(0, 0, 0, 0)
+        sl.setContentsMargins(0, 26, 0, 0)
         sl.setSpacing(0)
 
-        title = QLabel("FOXAI")
+        title = QLabel("foxai")
         title.setObjectName("appTitle")
         title.setStyleSheet(
-            f"color: {ACCENT}; font-size: 22px; font-weight: 900; letter-spacing: -0.5px; "
-            f"background: transparent; padding: 26px 20px 12px 20px;"
+            f"color: {ACCENT}; font-size: 22px; font-weight: 700; background: transparent;"
+            f"padding: 0 20px 0 20px;"
         )
-        sub = QLabel("Ayarlar Merkezi · Fedora")
+        sub = QLabel("Sistem ayarları · Fedora 45")
         sub.setObjectName("appSubtitle")
         sl.addWidget(title)
         sl.addWidget(sub)
+        sl.addSpacing(20)
 
-        # Tüm modüller (YaST benzeri)
+        # 19 modül 8xx px yüksekliğe taşar — kaydırılabilir nav alanına alındı,
+        # "Çıkış yap" altta sabit kalır.
+        nav_scroll = QScrollArea(sidebar)
+        nav_scroll.setObjectName("navScroll")
+        nav_scroll.setWidgetResizable(True)
+        nav_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        nav_scroll.setStyleSheet(
+            "QScrollArea#navScroll { background: transparent; border: none; }"
+        )
+        nav_container = QWidget()
+        nav_container.setStyleSheet("background: transparent;")
+        nl = QVBoxLayout(nav_container)
+        nl.setContentsMargins(0, 0, 0, 0)
+        nl.setSpacing(0)
+        nav_scroll.setWidget(nav_container)
+        sl.addWidget(nav_scroll, 1)
+
         nav_defs = [
-            ("Panel", "🏠", 0),
-            ("AI Asistan", "🤖", 1),
-            ("Hesap & Profiller", "👤", 2),
-            ("Görünüm", "🎨", 3),
-            ("Ekran", "🖥️", 4),
-            ("Bildirimler", "🔔", 5),
-            ("Gizlilik & Güvenlik", "🔒", 6),
-            ("Klavye", "⌨️", 7),
-            ("Fare & Touchpad", "🖱️", 8),
-            ("Güç & Pil", "🔋", 9),
-            ("Ağ & İnternet", "🌐", 10),
-            ("Bluetooth", "📶", 11),
-            ("Ses & Ayagıt", "🔊", 12),
-            ("Yazılım & Güncelleme", "📦", 13),
-            ("Donanım & Bilgi", "ℹ️", 14),
-            ("Önyükleyici (GRUB2)", "⚙️", 15),
-            ("Kullanıcılar & Gruplar", "👥", 16),
-            ("Güvenlik Duvarı", "🛡️", 17),
-            ("Sistem Servisleri", "⚙️", 18),
+            ("Panel", "view-grid", 0),
+            ("AI Asistan", "applications-science", 1),
+            ("Hesap & Profiller", "user-identity", 2),
+            ("Görünüm", "preferences-desktop-icons", 3),
+            ("Ekran", "video-display", 4),
+            ("Bildirimler", "notifications", 5),
+            ("Gizlilik & Güvenlik", "security-high", 6),
+            ("Klavye", "input-keyboard", 7),
+            ("Fare & Touchpad", "input-mouse", 8),
+            ("Güç & Pil", "battery", 9),
+            ("Ağ & İnternet", "network-wireless", 10),
+            ("Bluetooth", "network-bluetooth", 11),
+            ("Ses & Aygıt", "audio-volume-high", 12),
+            ("Yazılım & Güncelleme", "system-software-install", 13),
+            ("Donanım & Bilgi", "computer", 14),
+            ("Önyükleyici (GRUB2)", "system-reboot", 15),
+            ("Kullanıcılar & Gruplar", "system-users", 16),
+            ("Güvenlik Duvarı", "firewall-config", 17),
+            ("Sistem Servisleri", "services", 18),
         ]
         for text, icon, idx in nav_defs:
             btn = NavItem(text, icon)
             btn.clicked.connect(lambda _, i=idx: self._show_page(i))
-            sl.addWidget(btn)
+            nl.addWidget(btn)
             self.nav_items.append(btn)
-
-        sl.addStretch()
+        nl.addStretch()
 
         sl.addWidget(self._section_label("Profillerim"))
         self.profile_box = QVBoxLayout()
@@ -365,7 +388,7 @@ class MainWindow(QWidget):
         btn_new_prof.setStyleSheet(
             f"QPushButton {{ background: transparent; border: 1px dashed {BORDER}; "
             f"color: {TEXT_MUTED}; border-radius: 10px; padding: 8px 14px; font-size: 12px; }}"
-            f"QPushButton:hover {{ background: {SIDEBAR_HOVER}; color: {TEXT}; border-color: #64748b; }}"
+            f"QPushButton:hover {{ background: {SIDEBAR_HOVER}; color: {TEXT}; border-color: {TEXT_MUTED}; }}"
         )
         btn_new_prof.clicked.connect(self._add_profile)
         sl.addWidget(btn_new_prof)

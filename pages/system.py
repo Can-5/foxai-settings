@@ -6,7 +6,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
 
 from pages.base_page import BasePage
-from theme import ACCENT
+from theme import ACCENT, TEXT_MUTED
 from widgets import (
     ActionRow,
     Card,
@@ -23,9 +23,7 @@ class SystemPage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         # Cihaz
         lay.addWidget(SectionLabel("Cihaz"))
@@ -101,7 +99,7 @@ class SystemPage(BasePage):
             "Gizlilik odaklı · Sıfır telemetri · Açık kaynak"
         )
         about.setStyleSheet(
-            "color: #94a3b8; font-size: 13px; line-height: 1.6; background: transparent;"
+            f"color: {TEXT_MUTED}; font-size: 13px; line-height: 1.6; background: transparent;"
         )
         about.setWordWrap(True)
         card4.content_lay.addWidget(about)

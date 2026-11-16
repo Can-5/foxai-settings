@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import (
 )
 
 from pages.base_page import BasePage
-from theme import ACCENT
+from theme import ACCENT, TEXT, TEXT_MUTED
 from widgets import Card, SectionLabel, SettingRow, ToggleControl
 
 
@@ -22,9 +22,7 @@ class SystemServicesPage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         lay.addWidget(SectionLabel("Sistem Servisleri"))
         card = Card(
@@ -48,11 +46,11 @@ class SystemServicesPage(BasePage):
             rlay.setSpacing(12)
             nm = QLabel(name)
             nm.setStyleSheet(
-                "color: #f8fafc; font-size: 13px; font-weight: 600; background: transparent;"
+                f"color: {TEXT}; font-size: 13px; font-weight: 600; background: transparent;"
             )
             desc = QLabel(key)
             desc.setStyleSheet(
-                "color: #94a3b8; font-size: 11px; background: transparent;"
+                f"color: {TEXT_MUTED}; font-size: 11px; background: transparent;"
             )
             info = QWidget()
             ilay = QVBoxLayout(info)
@@ -71,7 +69,7 @@ class SystemServicesPage(BasePage):
         )
         status = QLabel("Tüm temel servisler aktif · 2 servis durduruldu")
         status.setStyleSheet(
-            "color: #94a3b8; font-size: 13px; background: transparent;"
+            f"color: {TEXT_MUTED}; font-size: 13px; background: transparent;"
         )
         card2.content_lay.addWidget(status)
         btn_refresh = QPushButton("Durumu yenile")

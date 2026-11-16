@@ -6,7 +6,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
 
 from pages.base_page import BasePage
-from theme import ACCENT
+from theme import ACCENT, TEXT_MUTED
 from widgets import Card, SectionLabel, SettingRow, ToggleControl
 
 
@@ -16,9 +16,7 @@ class BluetoothPage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         lay.addWidget(SectionLabel("Bluetooth"))
         card = Card("Bluetooth", "Kablosuz dış çevre birimlerini eşleştirin.")
@@ -29,7 +27,7 @@ class BluetoothPage(BasePage):
         )
         status = QLabel("Cihaz bulunamadı · Eşleştirilmiş cihaz yok")
         status.setStyleSheet(
-            "color: #94a3b8; font-size: 13px; background: transparent;"
+            f"color: {TEXT_MUTED}; font-size: 13px; background: transparent;"
         )
         card.content_lay.addWidget(status)
         btn_scan = QPushButton("Cihazları tara")

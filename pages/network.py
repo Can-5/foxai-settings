@@ -6,7 +6,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
 
 from pages.base_page import BasePage
-from theme import ACCENT
+from theme import ACCENT, TEXT, TEXT_MUTED
 from widgets import Card, SectionLabel, SettingRow, TextControl, ToggleControl
 
 
@@ -16,9 +16,7 @@ class NetworkPage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         lay.addWidget(SectionLabel("Ağ ve internet"))
         card = Card("Kablosuz ağ (Wi-Fi)", "Kablosuz ağları yönetin.")
@@ -29,7 +27,7 @@ class NetworkPage(BasePage):
         )
         ssid = QLabel("Bağlı ağ: Foxai-Home")
         ssid.setStyleSheet(
-            "color: #f8fafc; font-size: 13px; font-weight: 600; background: transparent;"
+            f"color: {TEXT}; font-size: 13px; font-weight: 600; background: transparent;"
         )
         card.content_lay.addWidget(ssid)
         btn_scan = QPushButton("Ağları tara")
@@ -66,7 +64,7 @@ class NetworkPage(BasePage):
             SettingRow("VPN etkin", "Trafiği şifreli tünelle geçirin.", vpn)
         )
         proxy = QLabel("Proxy yapılandırılmadı")
-        proxy.setStyleSheet("color: #94a3b8; font-size: 13px; background: transparent;")
+        proxy.setStyleSheet(f"color: {TEXT_MUTED}; font-size: 13px; background: transparent;")
         card3.content_lay.addWidget(proxy)
         lay.addWidget(card3)
 

@@ -6,7 +6,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from pages.base_page import BasePage
-from theme import ACCENT
+from theme import ACCENT, DANGER, SUCCESS, WARN
 from widgets import (
     ActionRow,
     Card,
@@ -23,9 +23,7 @@ class AppearancePage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         # Tema
         lay.addWidget(SectionLabel("Tema ve Renk"))
@@ -44,14 +42,14 @@ class AppearancePage(BasePage):
         lay.addWidget(card)
 
         # Akcent rengi butonları
-        card2 = Card("Vurgu (akcent) rengi", "Tüm etkileşimli elemanların rengi.")
+        card2 = Card("Vurgu rengi", "Tüm etkileşimli elemanların rengi.")
         colors = [
-            ("Mavi", "#409eff"),
-            ("Yeşil", "#22c55e"),
-            ("Kırmızı", "#ef4444"),
-            ("Mor", "#a855f7"),
-            ("Turuncu", "#f59e0b"),
-            ("Siyan", "#06b6d4"),
+            ("Pirinç", f"{ACCENT}"),
+            ("Yosun", f"{SUCCESS}"),
+            ("Kiremit", f"{DANGER}"),
+            ("Yunus", "#3e7a8a"),
+            ("Göktaşı", "#5a7a9a"),
+            ("Krem", "#e9e6df"),
         ]
         color_row = QWidget()
         cl = QHBoxLayout(color_row)
@@ -60,8 +58,10 @@ class AppearancePage(BasePage):
         for label, hexv in colors:
             btn = QPushButton(label)
             btn.setFixedSize(70, 34)
+            dark_text = {f"{ACCENT}".lower(), f"{SUCCESS}".lower(), f"{WARN}".lower(), "#e9e6df"}
+            ink = "#14171a" if hexv.lower() in dark_text else "#ffffff"
             btn.setStyleSheet(
-                f"background: {hexv}; border: none; border-radius: 10px; color: #fff; "
+                f"background: {hexv}; border: none; border-radius: 10px; color: {ink}; "
                 f"font-weight: 700; font-size: 12px;"
             )
             btn.setCursor(Qt.CursorShape.PointingHandCursor)

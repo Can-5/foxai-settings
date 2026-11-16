@@ -16,6 +16,7 @@ from PyQt6.QtWidgets import (
 
 from pages._root import output_tail, run_ro
 from pages.base_page import BasePage
+from theme import DANGER, SUCCESS, TEXT, TEXT_MUTED, WARN
 from widgets import Card, SectionLabel, SettingRow, SelectControl, ToggleControl
 
 
@@ -58,9 +59,7 @@ class FirewallPage(BasePage):
     # ---- UI ----
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         # Gerçek durum kartı
         lay.addWidget(SectionLabel("Gerçek Durum (firewalld)"))
@@ -156,13 +155,13 @@ class FirewallPage(BasePage):
             if w is not None:
                 w.deleteLater()
 
-    def _kv_label(self, key: str, value: str, color: str = "#f8fafc") -> QWidget:
+    def _kv_label(self, key: str, value: str, color: str = f"{TEXT}") -> QWidget:
         row = QWidget()
         rlay = QHBoxLayout(row)
         rlay.setContentsMargins(0, 0, 0, 0)
         rlay.setSpacing(12)
         k = QLabel(key)
-        k.setStyleSheet("color: #94a3b8; font-size: 12px; font-weight: 700; background: transparent; min-width: 170px;")
+        k.setStyleSheet(f"color: {TEXT_MUTED}; font-size: 12px; font-weight: 700; background: transparent; min-width: 170px;")
         v = QLabel(value)
         v.setStyleSheet(f"color: {color}; font-size: 12px; background: transparent;")
         v.setWordWrap(True)
@@ -173,11 +172,11 @@ class FirewallPage(BasePage):
     def _reload_status(self) -> None:
         state = self._detect_state()
         self._clear_layout(self._status_box)
-        service_color = "#22c55e" if state["active"] else "#ef4444"
+        service_color = f"{SUCCESS}" if state["active"] else f"{DANGER}"
         self._status_box.addWidget(self._kv_label("firewalld servisi", state.get("service", "?"), service_color))
         if not state["active"]:
             self._status_box.addWidget(
-                self._kv_label("Not", "firewalld çalışmıyor — kurallar uygulanamaz.", "#f59e0b")
+                self._kv_label("Not", "firewalld çalışmıyor — kurallar uygulanamaz.", f"{WARN}")
             )
             return
         self._status_box.addWidget(self._kv_label("Varsayılan zone", state.get("default_zone", "?")))
@@ -206,7 +205,7 @@ class FirewallPage(BasePage):
         rlay.setSpacing(12)
         lbl = QLabel(item)
         lbl.setStyleSheet(
-            "color: #f8fafc; font-size: 12px; font-family: monospace; background: transparent;"
+            f"color: {TEXT}; font-size: 12px; font-family: monospace; background: transparent;"
         )
         btn = QPushButton("Kaldır")
         btn.setObjectName("danger")

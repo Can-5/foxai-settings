@@ -6,7 +6,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
 
 from pages.base_page import BasePage
-from theme import ACCENT
+from theme import ACCENT, TEXT_MUTED
 from widgets import (
     ActionRow,
     Card,
@@ -24,9 +24,7 @@ class DisplayPage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         # Çözünürlük
         lay.addWidget(SectionLabel("Ekran"))
@@ -83,7 +81,7 @@ class DisplayPage(BasePage):
         # Çoklu ekran
         card4 = Card("Çoklu ekran", "İkincil monitörleri yapılandırın.")
         multi = QLabel("İkincil ekran: Bağlı değil")
-        multi.setStyleSheet("color: #94a3b8; font-size: 13px; background: transparent;")
+        multi.setStyleSheet(f"color: {TEXT_MUTED}; font-size: 13px; background: transparent;")
         card4.content_lay.addWidget(multi)
         btn_detect = QPushButton("Ekranları denetle")
         btn_detect.setObjectName("ghost")

@@ -15,9 +15,7 @@ class MousePage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         lay.addWidget(SectionLabel("Fare ve giriş cihazı"))
         card = Card("Fare hassasiyeti", "İşaretçi hareket hızını ayarlayın.")

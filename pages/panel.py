@@ -19,8 +19,8 @@ from PyQt6.QtWidgets import (
 from pages._root import run_pkexec, run_ro, output_tail
 from pages.base_page import BasePage
 from pages.system_info import _cpu_model, _os_release
-from theme import ACCENT, TEXT, TEXT_MUTED
-from widgets import Card, ScrollPage, SectionLabel
+from theme import ACCENT, CARD, INPUT, TEXT, TEXT_MUTED
+from widgets import Card, SectionLabel
 
 
 def _read_uptime() -> str:
@@ -99,7 +99,6 @@ class PanelPage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        page = ScrollPage()
         root = QVBoxLayout()
         root.setContentsMargins(0, 0, 0, 0)
         root.setSpacing(16)
@@ -127,8 +126,8 @@ class PanelPage(BasePage):
         self.upd_status.setWordWrap(True)
         self.upd_status.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
         self.upd_status.setStyleSheet(
-            "color: #e2e8f0; font-size: 12px; font-family: monospace; "
-            "background: #1e293b; padding: 10px 12px; border-radius: 8px; border: 1px solid #334155;"
+            f"color: {TEXT}; font-size: 12px; font-family: monospace; "
+            f"background: {CARD}; padding: 10px 12px; border-radius: 8px; border: 1px solid {INPUT};"
         )
         upd.add_widget(self.upd_status)
         btns = QHBoxLayout()
@@ -189,10 +188,7 @@ class PanelPage(BasePage):
         quick.content_lay.addLayout(grid)
         root.addWidget(quick)
 
-        page.lay.addLayout(root)
-        outer = QVBoxLayout(self)
-        outer.setContentsMargins(0, 0, 0, 0)
-        outer.addWidget(page)
+        self.lay.addLayout(root)
 
     # ---------- yardımcı satır ----------
     def _kv(self, key: str, value: str) -> QWidget:

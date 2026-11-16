@@ -106,9 +106,7 @@ class SystemInfoPage(BasePage):
         return SettingRow(title, "", QLabel(value))
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         osrel = _os_release()
         mem = _meminfo()

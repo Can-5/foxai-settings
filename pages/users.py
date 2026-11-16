@@ -15,7 +15,7 @@ from PyQt6.QtWidgets import (
 )
 
 from pages.base_page import BasePage
-from theme import ACCENT
+from theme import ACCENT, DANGER, SUCCESS, TEXT, TEXT_MUTED
 from widgets import Card, SectionLabel, SettingRow, TextControl, ToggleControl
 
 
@@ -25,17 +25,15 @@ class UsersPage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         lay.addWidget(SectionLabel("Kullanıcı Hesapları"))
         card = Card(
             "Sistem kullanıcıları", "Bilgisayara giriş yapabilen hesapları yönetin."
         )
         users = [
-            ("ilkaycan", "Yönetici", True, "#409eff"),
-            ("misafir", "Kullanıcı", False, "#94a3b8"),
+            ("ilkaycan", "Yönetici", True, f"{ACCENT}"),
+            ("misafir", "Kullanıcı", False, f"{TEXT_MUTED}"),
         ]
         for username, role, active, color in users:
             row = QWidget()
@@ -53,17 +51,17 @@ class UsersPage(BasePage):
             ilay.setSpacing(2)
             un = QLabel(username)
             un.setStyleSheet(
-                "color: #f8fafc; font-size: 13px; font-weight: 700; background: transparent;"
+                f"color: {TEXT}; font-size: 13px; font-weight: 700; background: transparent;"
             )
             rl = QLabel(role)
             rl.setStyleSheet(
-                "color: #94a3b8; font-size: 11px; background: transparent;"
+                f"color: {TEXT_MUTED}; font-size: 11px; background: transparent;"
             )
             ilay.addWidget(un)
             ilay.addWidget(rl)
             status = QLabel("Etkin" if active else "Devre dışı")
             status.setStyleSheet(
-                f"color: {'#22c55e' if active else '#ef4444'}; font-size: 11px; font-weight: 700; background: transparent;"
+                f"color: {'{SUCCESS}' if active else '{DANGER}'}; font-size: 11px; font-weight: 700; background: transparent;"
             )
             rlay.addWidget(dot, 0)
             rlay.addWidget(info, 1)

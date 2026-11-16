@@ -21,7 +21,7 @@ from database import (
     verify_account,
 )
 from pages.base_page import BasePage
-from theme import ACCENT, DANGER
+from theme import ACCENT, DANGER, TEXT, TEXT_MUTED
 from widgets import ActionRow, Card, SectionLabel, SettingRow, ToggleControl
 
 
@@ -36,19 +36,17 @@ class AccountsPage(BasePage):
         self.refresh_profiles()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         # Kart: Aktif profil
         self.card_active = Card("Etkin Profil", "Şu anda oturum açmış olan profiliniz.")
         self.lbl_active_name = QLabel()
         self.lbl_active_name.setStyleSheet(
-            "color: #f8fafc; font-size: 16px; font-weight: 700; background: transparent;"
+            f"color: {TEXT}; font-size: 16px; font-weight: 700; background: transparent;"
         )
         self.lbl_active_email = QLabel()
         self.lbl_active_email.setStyleSheet(
-            "color: #94a3b8; font-size: 13px; background: transparent;"
+            f"color: {TEXT_MUTED}; font-size: 13px; background: transparent;"
         )
         btn_switch = QPushButton("Profili değiştir")
         btn_switch.setObjectName("ghost")
@@ -78,7 +76,7 @@ class AccountsPage(BasePage):
         self.card_new = Card()
         self.input_name = QLineEdit()
         self.input_name.setPlaceholderText("Profil adı (örn. İş, Oyun, Kişisel)")
-        self.input_color = QLineEdit("#409eff")
+        self.input_color = QLineEdit(f"{ACCENT}")
         self.input_color.setPlaceholderText("Avatar rengi (hex)")
         btn_add = QPushButton("Profili Ekle")
         btn_add.setObjectName("primary")
@@ -137,12 +135,12 @@ class AccountsPage(BasePage):
             )
             name = QLabel(p["name"])
             name.setStyleSheet(
-                "color: #f8fafc; font-size: 14px; font-weight: 600; background: transparent;"
+                f"color: {TEXT}; font-size: 14px; font-weight: 600; background: transparent;"
             )
             if p["is_default"]:
                 name.setText(name.text() + "  (etkin)")
                 name.setStyleSheet(
-                    "color: #409eff; font-size: 14px; font-weight: 700; background: transparent;"
+                    f"color: {ACCENT}; font-size: 14px; font-weight: 700; background: transparent;"
                 )
             btn_del = QPushButton("Sil")
             btn_del.setObjectName("danger")
@@ -176,7 +174,7 @@ class AccountsPage(BasePage):
 
     def _add_profile(self) -> None:
         name = self.input_name.text().strip()
-        color = self.input_color.text().strip() or "#409eff"
+        color = self.input_color.text().strip() or ACCENT
         if not name:
             QMessageBox.warning(self, "Eksik bilgi", "Lütfen profil adı giriniz.")
             return

@@ -30,8 +30,8 @@ from PyQt6.QtWidgets import (
 from pages._root import output_tail, run_pkexec, run_ro
 from pages.base_page import BasePage
 from pages.system_info import _os_release
-from theme import ACCENT, TEXT_MUTED
-from widgets import Card, ScrollPage, SectionLabel
+from theme import ACCENT, BG, CARD, INPUT, TEXT, TEXT_MUTED
+from widgets import Card, SectionLabel
 
 _OLLAMA_URL = "http://127.0.0.1:11434"
 
@@ -115,7 +115,6 @@ class AiPage(BasePage):
 
     # ---------- UI ----------
     def _build_ui(self) -> None:
-        page = ScrollPage()
         root = QVBoxLayout()
         root.setContentsMargins(0, 0, 0, 0)
         root.setSpacing(16)
@@ -130,8 +129,8 @@ class AiPage(BasePage):
         self.status_lbl = QLabel("Durum denetleniyor…")
         self.status_lbl.setWordWrap(True)
         self.status_lbl.setStyleSheet(
-            "color: #e2e8f0; font-size: 12px; background: #1e293b; padding: 10px 12px; "
-            "border-radius: 8px; border: 1px solid #334155;"
+            f"color: {TEXT}; font-size: 12px; background: {CARD}; padding: 10px 12px; "
+            f"border-radius: 8px; border: 1px solid {INPUT};"
         )
         st.add_widget(self.status_lbl)
 
@@ -181,8 +180,8 @@ class AiPage(BasePage):
         self.transcript = QTextBrowser()
         self.transcript.setMinimumHeight(220)
         self.transcript.setStyleSheet(
-            "QTextBrowser { background: #0f172a; color: #e2e8f0; border: 1px solid #334155; "
-            "border-radius: 8px; padding: 10px; font-size: 13px; }"
+            f"QTextBrowser {{ background: {BG}; color: {TEXT}; border: 1px solid {INPUT}; "
+            f"border-radius: 8px; padding: 10px; font-size: 13px; }}"
         )
         chat.add_widget(self.transcript)
 
@@ -200,10 +199,7 @@ class AiPage(BasePage):
         chat.content_lay.addLayout(input_row)
         root.addWidget(chat)
 
-        page.lay.addLayout(root)
-        outer = QVBoxLayout(self)
-        outer.setContentsMargins(0, 0, 0, 0)
-        outer.addWidget(page)
+        self.lay.addLayout(root)
 
     # ---------- durum ----------
     def _refresh_status(self) -> None:

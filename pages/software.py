@@ -16,7 +16,7 @@ from PyQt6.QtWidgets import (
 
 from pages._root import output_tail, run_ro, valid_pkg_name
 from pages.base_page import BasePage
-from theme import ACCENT
+from theme import ACCENT, SUCCESS, TEXT, TEXT_MUTED, WARN
 from widgets import (
     Card,
     SectionLabel,
@@ -33,9 +33,7 @@ class SoftwarePage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         # Güncellemeler
         lay.addWidget(SectionLabel("Yazılım Güncellemeleri"))
@@ -76,7 +74,7 @@ class SoftwarePage(BasePage):
         card.content_lay.addWidget(btn_upgrade)
         self._updates_status = QLabel("Henüz denetlenmedi.")
         self._updates_status.setStyleSheet(
-            "color: #94a3b8; font-size: 12px; background: transparent;"
+            f"color: {TEXT_MUTED}; font-size: 12px; background: transparent;"
         )
         self._updates_status.setWordWrap(True)
         card.add_widget(self._updates_status)
@@ -211,7 +209,7 @@ class SoftwarePage(BasePage):
 
         if not all_ids:
             lbl = QLabel(f"Depo listesi alınamadı (rc={rc}). {err.strip() or out.strip()}")
-            lbl.setStyleSheet("color: #f59e0b; font-size: 12px; background: transparent;")
+            lbl.setStyleSheet(f"color: {WARN}; font-size: 12px; background: transparent;")
             lbl.setWordWrap(True)
             self._repos_box.addWidget(lbl)
             return
@@ -224,11 +222,11 @@ class SoftwarePage(BasePage):
             rlay.setSpacing(12)
             r = QLabel(repo_id)
             r.setStyleSheet(
-                "color: #f8fafc; font-size: 13px; font-weight: 700; background: transparent;"
+                f"color: {TEXT}; font-size: 13px; font-weight: 700; background: transparent;"
             )
             state = QLabel("etkin" if is_enabled else "kapalı")
             state.setStyleSheet(
-                "color: #22c55e; font-size: 12px;" if is_enabled else "color: #64748b; font-size: 12px;"
+                f"color: {SUCCESS}; font-size: 12px;" if is_enabled else f"color: {TEXT_MUTED}; font-size: 12px;"
             )
             btn = QPushButton("Kapat" if is_enabled else "Aç")
             btn.setObjectName("ghost")

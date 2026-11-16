@@ -5,11 +5,11 @@ from __future__ import annotations
 from PyQt6.QtWidgets import QWidget
 
 from database import get_setting, set_setting
-from widgets import SettingRow, ToggleControl
+from widgets import ScrollPage, SettingRow, ToggleControl
 
 
-class BasePage(QWidget):
-    """Bir profilin belirli ayar kategorisini gösteren sayfa."""
+class BasePage(ScrollPage):
+    """Kaydırılabilir ayar sayfası temeli — içeriği 30/24 marjinli viewport'a yazar."""
 
     def __init__(self, profile_id: int, parent=None):
         super().__init__(parent)

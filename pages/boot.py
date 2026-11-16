@@ -19,6 +19,7 @@ from PyQt6.QtWidgets import (
 
 from pages._root import output_tail, run_ro, safe_kernel_args
 from pages.base_page import BasePage
+from theme import BORDER, INPUT, TEXT, TEXT_MUTED
 from widgets import Card, SectionLabel, SelectControl, SettingRow, SpinControl
 
 GRUB_FILE = "/etc/default/grub"
@@ -54,12 +55,12 @@ class BootPage(BasePage):
         rlay.setSpacing(12)
         k = QLabel(key)
         k.setStyleSheet(
-            "color: #94a3b8; font-size: 12px; font-weight: 700; background: transparent; min-width: 200px;"
+            f"color: {TEXT_MUTED}; font-size: 12px; font-weight: 700; background: transparent; min-width: 200px;"
         )
         v = QLabel(self._kv.get(key, "—"))
         v.setStyleSheet(
-            "color: #f8fafc; font-size: 12px; font-family: monospace; background: #334155; "
-            "padding: 6px 10px; border-radius: 6px; border: 1px solid #475569;"
+            f"color: {TEXT}; font-size: 12px; font-family: monospace; background: {INPUT}; "
+            f"padding: 6px 10px; border-radius: 6px; border: 1px solid {BORDER};"
         )
         v.setWordWrap(True)
         rlay.addWidget(k, 0)
@@ -69,9 +70,7 @@ class BootPage(BasePage):
     # ---- UI ----
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         self._kv = self._read_grub_defaults()
         if "_error" in self._kv:
@@ -124,8 +123,8 @@ class BootPage(BasePage):
         # Çekirdek parametreleri
         params_edit = QLineEdit(self._kv.get("GRUB_CMDLINE_LINUX", ""))
         params_edit.setStyleSheet(
-            "background: #334155; border: 1px solid #475569; border-radius: 8px; "
-            "padding: 8px 12px; color: #f8fafc; font-family: monospace;"
+            f"background: {INPUT}; border: 1px solid {BORDER}; border-radius: 8px; "
+            f"padding: 8px 12px; color: {TEXT}; font-family: monospace;"
         )
         self._params_edit = params_edit
         card.add_widget(
@@ -142,7 +141,7 @@ class BootPage(BasePage):
         card.content_lay.addWidget(btn_apply)
         self._apply_status = QLabel("")
         self._apply_status.setStyleSheet(
-            "color: #94a3b8; font-size: 12px; background: transparent;"
+            f"color: {TEXT_MUTED}; font-size: 12px; background: transparent;"
         )
         self._apply_status.setWordWrap(True)
         card.add_widget(self._apply_status)
@@ -156,7 +155,7 @@ class BootPage(BasePage):
         if rc == 0 and out.strip():
             for line in out.strip().splitlines():
                 lbl = QLabel("• " + line.strip())
-                lbl.setStyleSheet("color: #e2e8f0; font-size: 12px; background: transparent;")
+                lbl.setStyleSheet(f"color: {TEXT}; font-size: 12px; background: transparent;")
                 lbl.setWordWrap(True)
                 menu_card.add_widget(lbl)
         elif rc == 0:

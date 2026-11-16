@@ -22,9 +22,7 @@ class PowerPage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         lay.addWidget(SectionLabel("Güç ve pil"))
         card = Card("Güç modu", "Performans ve tüketim dengelemesi.")

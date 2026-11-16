@@ -29,9 +29,7 @@ class AudioPage(BasePage):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        lay = QVBoxLayout(self)
-        lay.setContentsMargins(0, 0, 0, 0)
-        lay.setSpacing(20)
+        lay = self.lay
 
         lay.addWidget(SectionLabel("Ses"))
         card = Card("Çalma aygıtı", "Varsayılan ses çıkışını seçin.")
